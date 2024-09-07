@@ -1,0 +1,203 @@
+.formBody{
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Poppins";
+}
+
+.formBody .formCard{
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  background-color: #282c34;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.formBody .formCard h1{
+  color: #fff;
+  margin: 0 0 20px 0;
+}
+
+.formBody .formCard input{
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: none;
+  margin-bottom: 10px;
+  font-family: "Poppins";
+
+}
+
+.formBody .formCard button{
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: none;
+  margin-bottom: 10px;
+  background-color: yellow;
+  font-weight: 600;
+  font-family: "Poppins";
+}
+
+.todoList header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 25px;
+  background-color: #222;
+  font-family: "Poppins";
+}
+
+.todoList header h2{
+  color: #fff;
+  margin: 0;
+}
+
+.todoList header button{
+  padding: 12px 20px;
+  font-weight: 600;
+  background-color: rgb(140, 223, 15);
+  color: #222;
+  border: none;
+  border-radius: 10px;
+  font-family: "Poppins";
+  cursor: pointer;
+  transition: 0.3s all ease-in-out;
+}
+
+.todoList header button:hover{
+  box-shadow: 0px 0px 10px 1px rgb(140, 223, 15);
+}
+
+.todoListBody {
+  padding: 60px 80px;
+}
+
+.popOverForm{
+  height: 100vh;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #2222224d;
+  backdrop-filter: blur(2px);
+}
+
+.popOverForm form{
+  width: 33%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: #222;
+  border-radius: 16px;
+  border: 2px solid #fff;
+
+}
+
+.popOverForm form .fieldBox{
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.popOverForm form h2{
+  margin: 0;
+  font-family: "Poppins";
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.popOverForm form label{
+  font-family: "Poppins";
+  font-size: 18px;
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.popOverForm form input, .popOverForm form textarea{
+  padding: 8px 12px;
+  font-family: "Poppins";
+  border-radius: 4px;
+  border: none;
+}
+
+.formButtons{
+  display: flex;
+  gap: 10px;
+}
+
+button{
+  padding: 8px 20px;
+  border: none;
+  font-family: "Poppins";
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s all ease-in-out;
+}
+
+button.successButton{
+  background-color: rgb(140, 223, 15);
+  color: #000;
+}
+
+button.dangerButton{
+  background-color: rgb(223, 15, 15);
+  color: #fff;
+}
+
+button.successButton:hover{
+  box-shadow: 0px 0px 10px 1px rgb(140, 223, 15);
+}
+
+button.dangerButton:hover{
+  box-shadow: 0px 0px 10px 1px rgb(223, 15, 15);
+}
+
+.todoTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 0.9em;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.todoTable thead tr {
+  background-color: #222;
+  color: #ffffff;
+  text-align: left;
+}
+
+.todoTable th,
+.todoTable td {
+  padding: 12px 15px;
+}
+
+.todoTable tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.todoTable thead tr th:first-child{
+  color: rgb(140, 223, 15);
+}
+
+.todoTable tbody tr:last-child{
+  border-bottom: none;
+}
+
+.todoTable tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.todoTable tbody tr:hover {
+  background-color: #f1f1f1;
+}
