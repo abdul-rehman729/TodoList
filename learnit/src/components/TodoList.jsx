@@ -1,16 +1,19 @@
 import React, { useCallback, useState, useEffect } from "react";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
-import { FcInfo } from "react-icons/fc";
+import Lottie from "lottie-react";
+import loadingLottie from "../assets/lotties/loading.json";
 
 const TodoList = () => {
   const [popOverVis, setPopOverVis] = useState("Close Popup");
   const [tasks, setTasks] = useState([]);
+  const [updatingTask, setUpdatingTask] = useState(false);
 
   const [formFields, setFormFields] = useState({
     title: "",
     desc: "",
-    uid: uuidv4(), // We can drop this once the database handles unique IDs
+    uid: uuidv4(),
+    status: "Pending", // Set default status to "Pending"
   });
 
   // To store the ID of the task being edited
@@ -19,7 +22,7 @@ const TodoList = () => {
   // Load tasks from the database when the component mounts
   useEffect(() => {
     axios
-      .get("/api/tasks") // Adjust the API endpoint based on your backend
+      .get("/api/tasks")
       .then((response) => {
         setTasks(response.data);
       })
@@ -34,35 +37,52 @@ const TodoList = () => {
   }, []);
 
   const addTodoList = useCallback(() => {
+    setUpdatingTask(true);
     if (formFields.title !== "" && formFields.desc !== "") {
       if (editingTaskId) {
         // Edit task
         axios
-          .put(`/api/tasks/${editingTaskId}`, formFields) // Adjust API endpoint
+          .put(`/api/tasks/${editingTaskId}`, formFields)
           .then((response) => {
             setTasks((prevTasks) =>
               prevTasks.map((task) =>
                 task._id === editingTaskId ? response.data : task
               )
             );
-            setEditingTaskId(null); // Reset after editing
-            setFormFields({ title: "", desc: "", uid: uuidv4() });
+            setEditingTaskId(null);
+            setFormFields({
+              title: "",
+              desc: "",
+              uid: uuidv4(),
+              status: "Pending",
+            }); // Reset to default status
             setPopOverVis("Close Popup");
+            setUpdatingTask(false);
           })
           .catch((error) => {
             console.error("Error updating task:", error);
           });
       } else {
+        setUpdatingTask(true);
         // Add new task
         axios
-          .post("/api/tasks", formFields) // Adjust the API endpoint
+          .post("/api/tasks", formFields)
           .then((response) => {
             setTasks((prevTasks) => [...prevTasks, response.data]);
-            setFormFields({ title: "", desc: "", uid: uuidv4() });
+            setFormFields({
+              title: "",
+              desc: "",
+              uid: uuidv4(),
+              status: "Pending",
+            }); // Reset to default status
             setPopOverVis("Close Popup");
+            setUpdatingTask(false);
           })
           .catch((error) => {
-            console.error("Error adding task:", error.response?.data || error.message);
+            console.error(
+              "Error adding task:",
+              error.response?.data || error.message
+            );
           });
       }
     }
@@ -75,15 +95,16 @@ const TodoList = () => {
         title: taskToEdit.title,
         desc: taskToEdit.desc,
         uid: taskToEdit._id,
+        status: taskToEdit.status || "Pending", // Pre-select status, defaulting to "Pending"
       });
-      setEditingTaskId(id); // Set the ID of the task being edited
-      setPopOverVis("Open Popup"); // Open the form for editing
+      setEditingTaskId(id);
+      setPopOverVis("Open Popup");
     }
   };
 
   const deleteTodo = (id) => {
     axios
-      .delete(`/api/tasks/${id}`) // Adjust the API endpoint
+      .delete(`/api/tasks/${id}`)
       .then(() => {
         setTasks((prevTasks) => prevTasks.filter((task) => task._id !== id));
       })
@@ -126,6 +147,47 @@ const TodoList = () => {
                   value={formFields.desc}
                 ></textarea>
               </div>
+              <div className="fieldBox">
+                <label>Status</label>
+                <div className="radioFields">
+                  <div className="radio">
+                    <input
+                      type="radio"
+                      name="statusField"
+                      id="pendingStatus"
+                      value="Pending"
+                      onChange={(value) => handleFormFields("status", value)}
+                      checked={formFields.status === "Pending"} // Set checked condition
+                    />
+                    <span className="mark"></span>
+                    <label htmlFor="pendingStatus">Pending</label>
+                  </div>
+                  <div className="radio">
+                    <input
+                      type="radio"
+                      name="statusField"
+                      id="inProgressStatus"
+                      value="In Progress"
+                      onChange={(value) => handleFormFields("status", value)}
+                      checked={formFields.status === "In Progress"} // Set checked condition
+                    />
+                    <span className="mark"></span>
+                    <label htmlFor="inProgressStatus">In Progress</label>
+                  </div>
+                  <div className="radio">
+                    <input
+                      type="radio"
+                      name="statusField"
+                      id="completedStatus"
+                      value="Completed"
+                      onChange={(value) => handleFormFields("status", value)}
+                      checked={formFields.status === "Completed"} // Set checked condition
+                    />
+                    <span className="mark"></span>
+                    <label htmlFor="completedStatus">Completed</label>
+                  </div>
+                </div>
+              </div>
               <div className="formButtons">
                 <button
                   className="successButton"
@@ -140,6 +202,13 @@ const TodoList = () => {
                 >
                   Cancel
                 </button>
+                {updatingTask && (
+                  <Lottie
+                    animationData={loadingLottie}
+                    loop={true}
+                    style={{ height: "40px", width: "40px" }}
+                  />
+                )}
               </div>
             </form>
           </div>
@@ -152,31 +221,40 @@ const TodoList = () => {
               <th>Title</th>
               <th>Description</th>
               <th>Edit/Delete</th>
+              <th>Status</th>
             </tr>
           </thead>
-          {tasks.length > 0 && <tbody>
-            {tasks.map((task, index) => (
-              <tr key={task._id}>
-                <td>{index + 1}</td>
-                <td>{task.title}</td>
-                <td>{task.desc}</td>
-                <td>
-                  <button
-                    className="successButton"
-                    onClick={() => editTodo(task._id)}
-                  >
-                    Edit
-                  </button>{" "}
-                  <button
-                    className="dangerButton"
-                    onClick={() => deleteTodo(task._id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody> }
+          {tasks.length > 0 && (
+            <tbody>
+              {tasks.map((task, index) => (
+                <tr key={task._id}>
+                  <td>{index + 1}</td>
+                  <td>{task.title}</td>
+                  <td>{task.desc}</td>
+                  <td>
+                    <button
+                      className="successButton"
+                      onClick={() => editTodo(task._id)}
+                    >
+                      Edit
+                    </button>{" "}
+                    <button
+                      className="dangerButton"
+                      onClick={() => deleteTodo(task._id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                  <td>
+                    <div className={"status status-"+task.status}>
+                      <span></span>
+                      <p>{task.status}</p>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          )}
         </table>
 
         {tasks.length < 1 && <div className="emptyList"></div>}

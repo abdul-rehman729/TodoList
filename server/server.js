@@ -16,6 +16,7 @@ mongoose.connect("mongodb+srv://ar289559:Icandoit729@todolist.dp0bf.mongodb.net/
 const taskSchema = new mongoose.Schema({
   title: String,
   desc: String,
+  status: String
 });
 
 const Task = mongoose.model("Task", taskSchema);

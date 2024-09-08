@@ -126,6 +126,57 @@
   border: none;
 }
 
+.popOverForm form .fieldBox .radioFields{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.popOverForm form .fieldBox .radioFields .radio {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  position: relative;
+}
+
+.popOverForm form .fieldBox .radioFields .radio input[type='radio'] {
+  position: absolute;
+  opacity: 0; /* Hide the real radio button */
+  cursor: pointer;
+  height: 14px;
+  width: 14px;
+  margin: 0;
+  z-index: 1;
+}
+
+.popOverForm form .fieldBox .radioFields .radio .mark {
+  position: relative;
+  height: 14px;
+  width: 14px;
+  border: 2px solid #fff;
+  border-radius: 50%; /* Change to circle */
+  cursor: pointer;
+  pointer-events: none;
+}
+
+.popOverForm form .fieldBox .radioFields .radio input[type='radio']:checked ~ .mark::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 8px;
+  width: 8px;
+  background-color: #fff; /* Fill color for the checkmark */
+  border-radius: 50%; /* Inner circle when checked */
+}
+
+.popOverForm form .fieldBox .radioFields .radio label {
+  font-weight: 500;
+  font-size: 14px;
+  margin: 0;
+}
+
 .formButtons{
   display: flex;
   gap: 10px;
@@ -201,3 +252,51 @@ button.dangerButton:hover{
 .todoTable tbody tr:hover {
   background-color: #f1f1f1;
 }
+
+.todoTable tbody tr td .status{
+  padding: 7px 10px;
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  border-radius: 20px;
+  background-color: #222222;
+}
+
+.todoTable tbody tr td .status span{
+  height: 8px;
+  width: 8px;
+  border-radius: 10px;
+}
+
+.todoTable tbody tr td .status p{
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.todoTable tbody tr td .status-Pending span{
+  background-color: #df0f0f;
+}
+
+.todoTable tbody tr td .status-Pending p{
+  color: #df0f0f;
+}
+
+.todoTable tbody tr td .status-In.Progress span{
+  background-color: #E8E230;
+}
+
+.todoTable tbody tr td .status-In.Progress p{
+  color: #E8E230;
+}
+
+.todoTable tbody tr td .status-Completed span{
+  background-color: #8cdf0f;
+}
+
+.todoTable tbody tr td .status-Completed p{
+  color: #8cdf0f;
+}
+
