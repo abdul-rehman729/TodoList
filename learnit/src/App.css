@@ -76,7 +76,7 @@
 .popOverForm{
   height: 100vh;
   width: 100%;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   display: flex;
@@ -84,6 +84,7 @@
   align-items: center;
   background-color: #2222224d;
   backdrop-filter: blur(2px);
+  z-index: 2;
 }
 
 .popOverForm form{
@@ -254,14 +255,12 @@ button.dangerButton:hover{
 }
 
 .todoTable tbody tr td .status{
-  padding: 7px 10px;
   width: fit-content;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 5px;
   border-radius: 20px;
-  background-color: #222222;
 }
 
 .todoTable tbody tr td .status span{
@@ -285,11 +284,11 @@ button.dangerButton:hover{
 }
 
 .todoTable tbody tr td .status-In.Progress span{
-  background-color: #E8E230;
+  background-color: #ffb902;
 }
 
 .todoTable tbody tr td .status-In.Progress p{
-  color: #E8E230;
+  color: #ffb902;
 }
 
 .todoTable tbody tr td .status-Completed span{
@@ -300,3 +299,29 @@ button.dangerButton:hover{
   color: #8cdf0f;
 }
 
+.emptyList{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.emptyList .lottieIllustration{
+  margin-bottom: -120px;
+}
+
+.emptyList button{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 12px 20px;
+  font-weight: 600;
+  color: #ffb902;
+  background-color: #222;
+  border: none;
+  border-radius: 10px;
+  font-family: "Poppins";
+  cursor: pointer;
+  transition: 0.3s all ease-in-out;
+}

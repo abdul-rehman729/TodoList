@@ -3,6 +3,8 @@ import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import Lottie from "lottie-react";
 import loadingLottie from "../assets/lotties/loading.json";
+import emptyLottie from "../assets/lotties/empty.json";
+import { CgAdd } from "react-icons/cg";
 
 const TodoList = () => {
   const [popOverVis, setPopOverVis] = useState("Close Popup");
@@ -118,7 +120,7 @@ const TodoList = () => {
       <header>
         <h2>Todo List</h2>
         <button onClick={() => setPopOverVis("Open Popup")}>
-          Add Todo List
+          Add New Task
         </button>
       </header>
 
@@ -126,7 +128,7 @@ const TodoList = () => {
         {popOverVis === "Open Popup" && (
           <div className="popOverForm">
             <form action="#">
-              <h2>{editingTaskId ? "Edit Todo List" : "Add Todo List"}</h2>
+              <h2>{editingTaskId ? "Edit Task" : "Add New Task"}</h2>
               <div className="fieldBox">
                 <label htmlFor="titleField">Title</label>
                 <input
@@ -214,50 +216,68 @@ const TodoList = () => {
           </div>
         )}
 
-        <table className="todoTable">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Edit/Delete</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          {tasks.length > 0 && (
-            <tbody>
-              {tasks.map((task, index) => (
-                <tr key={task._id}>
-                  <td>{index + 1}</td>
-                  <td>{task.title}</td>
-                  <td>{task.desc}</td>
-                  <td>
-                    <button
-                      className="successButton"
-                      onClick={() => editTodo(task._id)}
-                    >
-                      Edit
-                    </button>{" "}
-                    <button
-                      className="dangerButton"
-                      onClick={() => deleteTodo(task._id)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                  <td>
-                    <div className={"status status-"+task.status}>
-                      <span></span>
-                      <p>{task.status}</p>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          )}
-        </table>
+        {tasks.length > 0 && (
+          <table className="todoTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th width="200">Description</th>
+                <th>Status</th>
+                <th width="200">Edit/Delete</th>
+              </tr>
+            </thead>
+            {tasks.length > 0 && (
+              <tbody>
+                {tasks.map((task, index) => (
+                  <tr key={task._id}>
+                    <td>{index + 1}</td>
+                    <td>{task.title}</td>
+                    <td>{task.desc}</td>
 
-        {tasks.length < 1 && <div className="emptyList"></div>}
+                    <td>
+                      <div className={"status status-" + task.status}>
+                        <span></span>
+                        <p>{task.status}</p>
+                      </div>
+                    </td>
+
+                    <td>
+                      <button
+                        className="successButton"
+                        onClick={() => editTodo(task._id)}
+                      >
+                        Edit
+                      </button>{" "}
+                      <button
+                        className="dangerButton"
+                        onClick={() => deleteTodo(task._id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            )}
+          </table>
+        )}
+
+        {tasks.length < 1 && (
+          <div className="emptyList">
+            <Lottie
+              className="lottieIllustration"
+              animationData={emptyLottie}
+              loop={true}
+              style={{ height: "600px", width: "600px" }}
+            />
+            <h1>There's Nothing in here</h1>
+            <button onClick={() => setPopOverVis("Open Popup")}>
+              <CgAdd size={20} />
+              Add New Task
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
